@@ -1,2 +1,28 @@
 # ontoscope-phylify
 Phylify module for Ontoscope
+
+## Design Milestone
+
+The PHYLIFY module sits near the top of the Ontoscope pipeline:
+
+![screen shot 2016-02-16 at 10 49 28 pm](https://cloud.githubusercontent.com/assets/1270998/13099403/ba767692-d4ff-11e5-8815-82152481636e.png)
+
+It is responsible for taking CO, which is the ontology of anatomical structures and cells, from FANTOM,
+and building a useful graph out of it.
+
+This graph will then be combined with FANTOM expression data, and through a thresholding function, provide the cell types to use as background when calculating differential expression with [DESeq2].
+
+This module will take input data from the FANTOM cell ontology, which has been downloaded and resides in this repository [here](https://raw.githubusercontent.com/thejmazz/ontoscope-phylify/master/ff-phase2-140729.obo).
+
+It will parse the `.obo` file using [bionode-obo] \(v0.1.0 at time of writing), which is a streaming obo parser I have written that can take a URL or a file and emit a stream of term objects, or newline delimited JSON (ndjson).
+
+JSON can be easily interpreted into R data frames with [jsonlite], which also supports streaming data.
+
+The graph will be constructed using the relations present in the obo file. The graph will be constructed using [graph.js] for the browser visualization tool, and [igraph] for the actual data pipeline within R. It is valuable to have a browser based interactive visualization, which you can toggle different relations on/off, to get a feel for what the data represents, and the meanings of the specific terms within the obo file.
+
+
+[DESeq2]: https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+[bionode-obo]: https://github.com/bionode/bionode-obo
+[jsonlite]: https://cran.r-project.org/web/packages/jsonlite/index.html
+[graph.js]: https://www.npmjs.com/package/graph.js
+[igraph]: http://igraph.org/
