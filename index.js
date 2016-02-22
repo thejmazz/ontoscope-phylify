@@ -1,5 +1,23 @@
-// import cytoscape from 'cytoscape'
+// Polyfills
+require('es6-promise').polyfill()
+require('isomorphic-fetch')
+
+// Requires
+const _ = require('highland')
 const cytoscape = require('cytoscape')
+
+
+fetch('/ff-phase2-140729.obo')
+  .then( (response) => {
+    if (response.status >= 400) {
+        throw new Error('Bad response from server');
+    }
+       
+    _(response.text())
+      .splitBy('\n')
+      .each(s => console.log(s))
+  })
+
 
 // TODO css..
 document.documentElement.style.height = '100%'
@@ -12,7 +30,6 @@ const containerDiv = document.createElement('div')
 containerDiv.style.height = '100%'
 document.body.appendChild(containerDiv)
 
-console.log(cytoscape)
 
 const cy = cytoscape({
   container: containerDiv, 

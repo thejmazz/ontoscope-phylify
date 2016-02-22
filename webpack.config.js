@@ -1,6 +1,6 @@
 'use strict'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: ['./index.js'],
@@ -17,6 +17,7 @@ module.exports = {
     }]
   },
   plugins: [
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin(),
+    new CopyWebpackPlugin([{from: 'public'}])
   ]
 }
