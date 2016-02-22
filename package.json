@@ -29,6 +29,7 @@
     "webpack": "^2.1.0-beta.2"
   },
   "dependencies": {
+    "bionode-obo": "^0.1.1",
     "cytoscape": "^2.6.4",
     "es6-promise": "^3.1.2",
     "highland": "^2.6.0",

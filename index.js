@@ -5,6 +5,7 @@ require('isomorphic-fetch')
 // Requires
 const _ = require('highland')
 const cytoscape = require('cytoscape')
+const obo = require('bionode-obo')
 
 
 fetch('/ff-phase2-140729.obo')
@@ -13,8 +14,11 @@ fetch('/ff-phase2-140729.obo')
         throw new Error('Bad response from server');
     }
        
-    _(response.text())
-      .splitBy('\n')
+    // _(response.text())
+    //   .splitBy('\n')
+    //   .each(s => console.log(s))
+    
+    _(obo.terms(_(response.text())))
       .each(s => console.log(s))
   })
 
