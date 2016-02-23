@@ -1,6 +1,20 @@
 # ontoscope-phylify
 
-Phylify module for Ontoscope
+Phylify module for [Ontoscope]
+
+[Ontoscope]: https://github.com/hyginn/Ontoscope
+
+## Running
+
+```bash
+$ npm install
+# in one tab
+$ npm start
+# in another tab
+$ npm run serve
+```
+
+The bundle will recompile as you save, and the webpage will then automatically refresh.
 
 ## Design Milestone
 
@@ -39,16 +53,4 @@ of the specific terms within the obo file.
 [jsonlite]: https://cran.r-project.org/web/packages/jsonlite/index.html
 [graph.js]: https://www.npmjs.com/package/graph.js
 [igraph]: http://igraph.org/
-
-## Running
-
-```bash
-$ npm install
-# in one tab
-$ npm start
-# in another tab
-$ npm run serve
-```
-
-The bundle will recompile as you save, and the webpage will then automatically refresh.
 
