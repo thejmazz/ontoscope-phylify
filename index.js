@@ -5,10 +5,20 @@ require('isomorphic-fetch')
 // Requires
 const _ = require('highland')
 const cytoscape = require('cytoscape')
+const queue = require('queue')
 const obo = require('bionode-obo')
 
+const q = queue({concurrency: 40})
+const TIMEOUT = 0 
+console.log(`Its gonna take ${(6170*TIMEOUT) / 1000 / 60} minutes`)
 let terms = []
 let total = 0
+let compl = 0
+
+const startTime = Date.now()
+console.log(startTime)
+
+// q.start()
 
 // let smallerTerms
 
@@ -19,26 +29,51 @@ fetch('/ff-phase2-140729.obo').then( (response) => {
     
   _(obo.terms(_(response.text())))
     .each( (term) => {
-      // console.log(term)
-      // terms.push({data: {id: term.id}})
-      // console.log(terms)
-      if (terms.length <= 500) {
-        terms.push({data: {id: term.id}})
-      }
-      
-      if (terms.length === 500) {
-        // console.log(terms)
-        console.log(total)
-        total += terms.length
+      q.push( (cb) => {
+        setTimeout( () => {
+          // console.log(compl++)
+          compl++
+          if (compl === 6000) {
+            const delta = Date.now() - startTime
+            console.log(delta / 1000 / 60)
+          }
 
-        cy.add(terms)
-        let layout = window.cy.elements().makeLayout({name: 'grid'})
-        layout.run()
-
-        terms = []
+          console.log('did one')
+          cy.add({data: {id: term.id}})
+          if (compl % 500 === 0) {
+            let layout = window.cy.elements().makeLayout({name: 'grid'})
+            layout.run()
+          }
+          cb()
+        }, TIMEOUT )
+      } )
+      total += 1
+      // console.log(total)
+      if (total === 6170) {
+        console.log('gonna start')
+        q.start()
       }
-    })
-    .done( () => console.log('done') )
+    } )
+    // .each( (term) => {
+    //   // console.log(term)
+    //   // terms.push({data: {id: term.id}})
+    //   // console.log(terms)
+    //   if (terms.length <= 500) {
+    //     terms.push({data: {id: term.id}})
+    //   }
+    //
+    //   if (terms.length === 500) {
+    //     // console.log(terms)
+    //     console.log(total)
+    //     total += terms.length
+    //
+    //     cy.add(terms)
+    //     let layout = window.cy.elements().makeLayout({name: 'grid'})
+    //     layout.run()
+    //
+    //     terms = []
+    //   }
+    // }) 
 })
 
 
