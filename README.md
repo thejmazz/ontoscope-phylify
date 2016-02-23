@@ -4,6 +4,12 @@ Phylify module for [Ontoscope]
 
 [Ontoscope]: https://github.com/hyginn/Ontoscope
 
+## Notebook
+
+**2016/02/23** 
+
+Webpage for streaming vertices into cytoscape.js. See [igraph](https://github.com/thejmazz/ontoscope-phylify/tree/106a2a8c0f17e82e8bfe86e5121f881d4719c87c/igraph) (at that commit). Has the first plot of FANTOM data!
+
 ## Running
 
 ```bash
