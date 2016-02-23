@@ -8,6 +8,22 @@ const cytoscape = require('cytoscape')
 const queue = require('queue')
 const obo = require('bionode-obo')
 
+// Config
+// TODO its own file, maybe bring in with webpack, etc.
+let config = {
+  dev: {
+    BASE_URL: ''
+  },
+  prod: {
+    BASE_URL: 'https://thejmazz.github.io/ontoscope-phylify'
+  }
+}
+if (__DEV__)
+  config = config.dev
+else
+  config = config.prod
+
+
 const startTime = Date.now()
 
 // TODO explain this section
@@ -21,7 +37,7 @@ const q = queue({concurrency: 1})
 // Temp counter until 'eventedness' in parser is resolved
 let index = 0
 
-fetch('/ff-phase2-140729.obo').then( (response) => {
+fetch(config.BASE_URL + '/ff-phase2-140729.obo').then( (response) => {
   if (response.status >= 400) {
       throw new Error('Bad response from server')
   }

@@ -4,8 +4,9 @@
   "description": "PHYLIFY module for Ontoscope.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "build:watch": "webpack -w",
+    "build": "NODE_ENV=dev webpack",
+    "build:watch": "NODE_ENV=dev webpack -w",
+    "build:prod": "NODE_ENV=prod webpack",
     "serve": "browser-sync start --files \"dist/*.html, dist/*.js\" --server \"dist\"",
     "start": "npm run build:watch",
     "test": "echo \"Error: no test specified\" && exit 1"
