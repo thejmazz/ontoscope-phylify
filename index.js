@@ -37,6 +37,8 @@ const q = queue({concurrency: 1})
 // Temp counter until 'eventedness' in parser is resolved
 let index = 0
 
+let fantom = []
+
 fetch(config.BASE_URL + '/ff-phase2-140729.obo').then( (response) => {
   if (response.status >= 400) {
       throw new Error('Bad response from server')
@@ -45,6 +47,7 @@ fetch(config.BASE_URL + '/ff-phase2-140729.obo').then( (response) => {
   // TODO handle last 170 terms
   _(obo.terms( response.text() ))
     .each( (term) => {
+      fantom[index] = term
       termsBuffer[index] = {data: {id: term.id}}
       termsBufferCounter++
 
@@ -69,6 +72,7 @@ fetch(config.BASE_URL + '/ff-phase2-140729.obo').then( (response) => {
               const totalTime = (Date.now() - startTime) / 1000
 
               console.log(`Finished queue in ${totalTime} s.`)
+              generateEdges()
             }
 
             cb()
@@ -89,6 +93,78 @@ fetch(config.BASE_URL + '/ff-phase2-140729.obo').then( (response) => {
       index++
     }) 
 })
+
+// after the stream, make edges
+// TODO stream in edges when possible..
+const EDGES_BUFFER_SIZE = 50
+let edgesBuffer = []
+let edgesBufferCounter = 0
+let edgesChunks = 0
+
+let numEdges = 0
+
+const q2 = queue({concurrency: 1})
+
+const generateEdges = () => {
+  fantom.forEach( (term, i) => {
+    let target
+    if (term.is_a) {
+      target = term.is_a.split('!')[0].trim()
+      edgesBuffer[i] = {data: { id: term.id + '-' + target, source: term.id, target}}
+      edgesBufferCounter++
+      // console.log(edgesBuffer[i]) 
+      
+        if (edgesBufferCounter === EDGES_BUFFER_SIZE) {
+          q2.push( (cb) => {
+            setTimeout( () => {
+              edgesChunks++
+              const start = (edgesChunks-1) * EDGES_BUFFER_SIZE
+              const end = edgesChunks * EDGES_BUFFER_SIZE
+              const chunkBuffer = edgesBuffer.slice(start, end)
+             
+              const sTime = Date.now() 
+              // console.log(chunkBuffer)
+              cy.add({edges: chunkBuffer})
+              numEdges += chunkBuffer.length
+              // console.log('added some edges')
+              const delta = Date.now() - sTime
+              console.log(numEdges + ' after ' + delta + ' ms')
+
+              if (numEdges === 6150) {
+                button.innerHTML += ' (ready)'
+              }
+
+              cb()
+            }, 0)
+          })
+
+          edgesBufferCounter = 0 
+        }
+
+    }
+
+    // cy.add(edgesBuffer)
+    q2.start()
+  })
+}
+
+
+const button = document.createElement('button')
+button.innerHTML = 'visit lag city'
+button.style.position = 'absolute'
+button.style.right = '0'
+button.style.zIndex = '1000'
+button.addEventListener('click', () => {
+  const cose = cy.elements().makeLayout({name: 'cose'})
+  cose.run()
+  console.log('Started running cose layout...')
+  console.log('This will take a while, about 4 stages:')
+  console.log('Stage 1: nothing happens')
+  console.log('Stage 2: blob')
+  console.log('Stage 3: a different blob')
+  console.log('Stage 4: a bunch of blobs')
+})
+document.body.appendChild(button)
 
 
 // TODO css..
