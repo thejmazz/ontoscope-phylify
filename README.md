@@ -4,12 +4,6 @@ Phylify module for [Ontoscope]
 
 [Ontoscope]: https://github.com/hyginn/Ontoscope
 
-## Notebook
-
-**2016/02/23** 
-
-Webpage for streaming vertices into cytoscape.js. See [igraph](https://github.com/thejmazz/ontoscope-phylify/tree/106a2a8c0f17e82e8bfe86e5121f881d4719c87c/igraph) (at that commit). Has the first plot of FANTOM data!
-
 ## Running
 
 ```bash
@@ -21,6 +15,19 @@ $ npm run serve
 ```
 
 The bundle will recompile as you save, and the webpage will then automatically refresh.
+
+R code is in `igraph`.
+
+## Notebook
+
+**2016/02/23** 
+
+Webpage for streaming vertices into cytoscape.js. See [igraph](https://github.com/thejmazz/ontoscope-phylify/tree/106a2a8c0f17e82e8bfe86e5121f881d4719c87c/igraph) (at that commit). Has the first plot of FANTOM data!
+
+**2016/02/26**
+
+Integrated edges into cytoscape.js. Applied "cose" layout after all edges added. See [some pictures from the vacation](https://github.com/thejmazz/ontoscope-phylify/commit/c1541267798f946e7e66c20686a442962dd59373) (went to lag city). Next todo is to go back and get a nice plot from igraph.
+
 
 ## Design Milestone
 
