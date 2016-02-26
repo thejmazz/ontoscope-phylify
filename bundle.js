@@ -7136,6 +7136,8 @@
 	// Temp counter until 'eventedness' in parser is resolved
 	var index = 0;
 	
+	var fantom = [];
+	
 	fetch(config.BASE_URL + '/ff-phase2-140729.obo').then(function (response) {
 	  if (response.status >= 400) {
 	    throw new Error('Bad response from server');
@@ -7143,6 +7145,7 @@
 	
 	  // TODO handle last 170 terms
 	  _(obo.terms(response.text())).each(function (term) {
+	    fantom[index] = term;
 	    termsBuffer[index] = { data: { id: term.id } };
 	    termsBufferCounter++;
 	
@@ -7167,6 +7170,7 @@
 	            var totalTime = (Date.now() - startTime) / 1000;
 	
 	            console.log('Finished queue in ' + totalTime + ' s.');
+	            generateEdges();
 	          }
 	
 	          cb();
@@ -7187,6 +7191,76 @@
 	    index++;
 	  });
 	});
+	
+	// after the stream, make edges
+	// TODO stream in edges when possible..
+	var EDGES_BUFFER_SIZE = 50;
+	var edgesBuffer = [];
+	var edgesBufferCounter = 0;
+	var edgesChunks = 0;
+	
+	var numEdges = 0;
+	
+	var q2 = queue({ concurrency: 1 });
+	
+	var generateEdges = function generateEdges() {
+	  fantom.forEach(function (term, i) {
+	    var target = undefined;
+	    if (term.is_a) {
+	      target = term.is_a.split('!')[0].trim();
+	      edgesBuffer[i] = { data: { id: term.id + '-' + target, source: term.id, target: target } };
+	      edgesBufferCounter++;
+	      // console.log(edgesBuffer[i])
+	
+	      if (edgesBufferCounter === EDGES_BUFFER_SIZE) {
+	        q2.push(function (cb) {
+	          setTimeout(function () {
+	            edgesChunks++;
+	            var start = (edgesChunks - 1) * EDGES_BUFFER_SIZE;
+	            var end = edgesChunks * EDGES_BUFFER_SIZE;
+	            var chunkBuffer = edgesBuffer.slice(start, end);
+	
+	            var sTime = Date.now();
+	            // console.log(chunkBuffer)
+	            cy.add({ edges: chunkBuffer });
+	            numEdges += chunkBuffer.length;
+	            // console.log('added some edges')
+	            var delta = Date.now() - sTime;
+	            console.log(numEdges + ' after ' + delta + ' ms');
+	
+	            if (numEdges === 6150) {
+	              button.innerHTML += ' (ready)';
+	            }
+	
+	            cb();
+	          }, 0);
+	        });
+	
+	        edgesBufferCounter = 0;
+	      }
+	    }
+	
+	    // cy.add(edgesBuffer)
+	    q2.start();
+	  });
+	};
+	
+	var button = document.createElement('button');
+	button.innerHTML = 'visit lag city';
+	button.style.position = 'absolute';
+	button.style.right = '0';
+	button.style.zIndex = '1000';
+	button.addEventListener('click', function () {
+	  var cose = cy.elements().makeLayout({ name: 'cose' });
+	  cose.run();
+	  console.log('Started running cose layout...');
+	  console.log('This will take a while, about 4 stages:');
+	  console.log('Stage 1: nothing happens');
+	  console.log('Stage 2: blob');
+	  console.log('Stage 3: a different blob');
+	  console.log('Stage 4: a bunch of blobs');
+	});
+	document.body.appendChild(button);
 	
 	// TODO css..
 	document.documentElement.style.height = '100%';
