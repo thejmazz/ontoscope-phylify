@@ -66,11 +66,9 @@ for (i in 1:length(terms$is_a)) {
 # which can take a d.f. with vectors named from, to, for the edges as described
 # above
 relations <- data.frame(from=sources, to=targets)
-# ids <- terms$id
 g <- graph_from_data_frame(relations, directed=TRUE, vertices=terms$id)
 
 
 # === Plotting ===
 
-# source and do this yourself, heavy atm
-# plot(g)
+plot(g, vertex.size=0.01, vertex.label=NA, edge.arrow.width=0)
