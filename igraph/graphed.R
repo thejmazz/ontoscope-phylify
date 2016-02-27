@@ -71,4 +71,17 @@ g <- graph_from_data_frame(relations, directed=TRUE, vertices=terms$id)
 
 # === Plotting ===
 
+# SVG
+# svg("plot.svg", width=20, height=20)
+
+# Quartz
 plot(g, vertex.size=0.01, vertex.label=NA, edge.arrow.width=0)
+
+# Close to SVG file
+# dev.off
+
+# Layouts
+# as_star
+# as_tree
+# as_circle
+# nicely
