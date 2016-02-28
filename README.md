@@ -34,7 +34,7 @@ Cleaning, [nicer, circle, tree plots](https://github.com/thejmazz/ontoscope-phyl
 
 **2016/02/28**
 
-Interactive plot with all nodes at reasonable framerate with plotly.
+[Interactive plot with all nodes](https://github.com/thejmazz/ontoscope-phylify/raw/6775f541912d12db5d4400d1e94df9e79a460271/igraph/plots/plotly_01.png) at reasonable framerate with plotly.
 
 ## Design Milestone
 
