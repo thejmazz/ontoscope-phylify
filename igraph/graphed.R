@@ -1,14 +1,13 @@
 # === Packages ===
 
 # json <-> data frames (w/ streams too)
-if (!require(jsonlite, quietly=TRUE)) {
-    install.packages("jsonlite")
-}
+if (!require(jsonlite, quietly=TRUE)) install.packages("jsonlite")
 
 # R bindings to C based network analysis package igraph
-if (!require(igraph, quietly=TRUE)) {
-    install.packages("igraph")
-}
+if (!require(igraph, quietly=TRUE)) install.packages("igraph")
+
+# web-based graphs via plotly's JavaScript graphing library
+if (!require(plotly, quietly=TRUE)) install.packages("plotly")
 
 # === Utility Functions ===
 

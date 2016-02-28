@@ -28,6 +28,13 @@ Webpage for streaming vertices into cytoscape.js. See [igraph](https://github.co
 
 Integrated edges into cytoscape.js. Applied "cose" layout after all edges added. See [some pictures from the vacation](https://github.com/thejmazz/ontoscope-phylify/commit/c1541267798f946e7e66c20686a442962dd59373) (went to lag city). Next todo is to go back and get a nice plot from igraph.
 
+**2016/02/27**
+
+Cleaning, [nicer, circle, tree plots](https://github.com/thejmazz/ontoscope-phylify/tree/6db95b922b25ffee7accc0f26e90ca66a49d1946/igraph/plots)
+
+**2016/02/28**
+
+Interactive plot with all nodes at reasonable framerate with plotly.
 
 ## Design Milestone
 
