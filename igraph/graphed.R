@@ -84,3 +84,14 @@ plot(g, vertex.size=0.01, vertex.label=NA, edge.arrow.width=0)
 # as_tree
 # as_circle
 # nicely
+
+# === With Just FFs ===
+
+# 4144 Nodes with FF IDs
+ffNodes <- c()
+
+for (id in terms$id) {
+    if (strsplit(id, ":")[[1]][1] == "FF") {
+        ffNodes <- c(ffNodes, id)
+    }
+}

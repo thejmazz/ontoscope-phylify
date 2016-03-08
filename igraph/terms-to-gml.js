@@ -29,7 +29,7 @@ const makeEdges = (terms) => {
 
   const getI = (id) => {
     let i
-    terms.forEach((term, j) => {
+    terms.forEach( (term, j) => {
       if (term.id === id) {
         i = j
       }
@@ -38,7 +38,7 @@ const makeEdges = (terms) => {
     return i
   }
 
-  terms.forEach((term, i) => {
+  terms.forEach( (term, i) => {
     if (term.is_a) {
       const source = i
       const target = term.is_a.split('!')[0].trim()
@@ -51,7 +51,7 @@ const makeEdges = (terms) => {
   return edges
 }
 
-obo.split('\n').forEach(l => {
+obo.split('\n').forEach( (l) => {
   let term
   try {
     term = JSON.parse(l)

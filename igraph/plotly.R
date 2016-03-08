@@ -9,7 +9,6 @@ G <- read.graph("fantom.gml", format = c("gml"))
 L <- layout_as_tree(G)
 
 # vertices and edges
-vs <- V(G)
 es <- as.data.frame(get.edgelist(G))
 
 Nv <- length(vs)
